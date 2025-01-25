@@ -50,20 +50,44 @@ Each microservice is implemented in the language best suited to its specific nee
 
 ### Java (Spring Boot)
 
-Each Java-based microservice uses either Gradle or Maven as the build tool, chosen based on the complexity and dependency management needs:
+Each Java-based microservice uses either Gradle or Maven as the build tool, and implements an appropriate communication protocol based on its use case:
 
-| **Microservice**         | **Build-Tool** | **Repository Name**                 | **Reason**                                                                 |
-|---------------------------|----------------|-------------------------------------|-----------------------------------------------------------------------------|
-| Property Service          | Gradle         | `gentlecorp-property-service`      | Gradle's flexibility supports complex dependency graphs.                   |
-| Customer Service          | Gradle         | `gentlecorp-customer-service`      | Ideal for rapid builds and managing modular dependencies.                  |
-| Account Service           | Maven          | `gentlecorp-account-service`       | Preferred for its stability in large-scale enterprise projects.            |
-| Invoice Service           | Maven          | `gentlecorp-invoice-service`       | Reliable for managing well-defined project structures.                     |
-| Transaction Service       | Gradle         | `gentlecorp-transaction-service`   | Supports dynamic and multi-project builds efficiently.                     |
-| Booking Service           | Maven          | `gentlecorp-booking-service`       | Provides excellent dependency version control for transactional services.  |
-| Entertainment Service     | Gradle         | `gentlecorp-entertainment-service` | Suitable for projects requiring flexible plugin integrations.              |
-| Activity Service          | Maven          | `gentlecorp-activity-service`      | Maven's maturity makes it ideal for production-level stability.            |
+| **Microservice**         | **Build-Tool** | **Repository Name**                 | **Protocol**  | **Reason**                                                                 |
+|---------------------------|----------------|-------------------------------------|---------------|-----------------------------------------------------------------------------|
+| Property Service          | Gradle         | `gentlecorp-property-service`      | REST          | Suitable for standard CRUD operations on structured data.                  |
+| Customer Service          | Gradle         | `gentlecorp-customer-service`      | REST          | REST ensures easy integration with other services for customer management. |
+| Account Service           | Maven          | `gentlecorp-account-service`       | REST          | Financial data management benefits from REST's simplicity and security.    |
+| Invoice Service           | Maven          | `gentlecorp-invoice-service`       | REST          | REST provides clarity in handling transactional document APIs.             |
+| Transaction Service       | Gradle         | `gentlecorp-transaction-service`   | REST          | REST fits well for secure, synchronous financial transactions.             |
+| Booking Service           | Maven          | `gentlecorp-booking-service`       | REST          | REST offers reliable booking operations for third-party integrations.      |
+| Entertainment Service     | Gradle         | `gentlecorp-entertainment-service` | GraphQL       | GraphQL allows querying flexible multimedia content.                       |
+| Activity Service          | Maven          | `gentlecorp-activity-service`      | REST          | REST supports straightforward activity management and planning.            |
 
 ### Python (FastAPI)
+
+Each Python-based microservice implements a protocol tailored to its specific function:
+
+| **Microservice**         | **Repository Name**                  | **Protocol**  | **Reason**                                                                 |
+|---------------------------|--------------------------------------|---------------|-----------------------------------------------------------------------------|
+| Notification Service      | `gentlecorp-notification-service`   | REST          | REST handles asynchronous notification triggers effectively.               |
+| Activity Log Service      | `gentlecorp-activity-log-service`   | REST          | REST provides simple endpoints for storing and retrieving logs.            |
+| Recommendation Service    | `gentlecorp-recommendation-service` | GraphQL       | GraphQL enables personalized and flexible recommendation queries.          |
+| Reviews Service           | `gentlecorp-reviews-service`        | GraphQL       | GraphQL handles nested data for user reviews efficiently.                  |
+| Transport Service         | `gentlecorp-transport-service`      | REST          | REST ensures compatibility with external transport APIs.                   |
+
+### TypeScript (NestJS)
+
+Each TypeScript-based microservice uses either REST or GraphQL based on its data complexity:
+
+| **Microservice**         | **Repository Name**                 | **Protocol**  | **Reason**                                                                 |
+|---------------------------|-------------------------------------|---------------|-----------------------------------------------------------------------------|
+| Auction Service           | `gentlecorp-auction-service`       | GraphQL       | GraphQL supports real-time updates and flexible bidding data queries.      |
+| Order Service             | `gentlecorp-order-service`         | REST          | REST fits the transactional nature of order processing.                    |
+| Inventory Service         | `gentlecorp-inventory-service`     | REST          | REST ensures compatibility with inventory tracking systems.                |
+| Menu Service              | `gentlecorp-menu-service`          | GraphQL       | GraphQL offers dynamic queries for menu items and configurations.          |
+| Payment Service           | `gentlecorp-payment-service`       | REST          | REST is ideal for secure and transactional financial operations.           |
+| Product Service           | `gentlecorp-product-service`       | GraphQL       | GraphQL enables flexible and efficient product catalog queries.            |
+| ShoppingCart Service      | `gentlecorp-shoppingcart-service`  | REST          | REST ensures compatibility and simplicity for cart operations.             |
 
 1. **Notification Service**
    - Function: Send real-time notifications via various channels.
