@@ -50,29 +50,18 @@ Each microservice is implemented in the language best suited to its specific nee
 
 ### Java (Spring Boot)
 
-1. **Property Service**
-   - Function: Manage property listings and details.
+Each Java-based microservice uses either Gradle or Maven as the build tool, chosen based on the complexity and dependency management needs:
 
-2. **Customer Service**
-   - Function: Manage customer profiles and data.
-
-3. **Account Service**
-   - Function: Manage bank accounts and financial data.
-
-4. **Invoice Service**
-   - Function: Generate and manage transaction invoices.
-
-5. **Transaction Service**
-   - Function: Handle financial transactions securely.
-
-6. **Booking Service**
-   - Function: Manage reservations and bookings.
-
-7. **Entertainment Service**
-   - Function: Manage multimedia content.
-
-8. **Activity Service**
-   - Function: Organize and manage leisure activities.
+| **Microservice**         | **Build-Tool** | **Repository Name**                 | **Reason**                                                                 |
+|---------------------------|----------------|-------------------------------------|-----------------------------------------------------------------------------|
+| Property Service          | Gradle         | `gentlecorp-property-service`      | Gradle's flexibility supports complex dependency graphs.                   |
+| Customer Service          | Gradle         | `gentlecorp-customer-service`      | Ideal for rapid builds and managing modular dependencies.                  |
+| Account Service           | Maven          | `gentlecorp-account-service`       | Preferred for its stability in large-scale enterprise projects.            |
+| Invoice Service           | Maven          | `gentlecorp-invoice-service`       | Reliable for managing well-defined project structures.                     |
+| Transaction Service       | Gradle         | `gentlecorp-transaction-service`   | Supports dynamic and multi-project builds efficiently.                     |
+| Booking Service           | Maven          | `gentlecorp-booking-service`       | Provides excellent dependency version control for transactional services.  |
+| Entertainment Service     | Gradle         | `gentlecorp-entertainment-service` | Suitable for projects requiring flexible plugin integrations.              |
+| Activity Service          | Maven          | `gentlecorp-activity-service`      | Maven's maturity makes it ideal for production-level stability.            |
 
 ### Python (FastAPI)
 
