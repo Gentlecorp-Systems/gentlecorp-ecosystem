@@ -49,6 +49,11 @@ Each microservice is implemented in the language best suited to its specific nee
 
 5. **Payment Service**
    - Function: Process secure financial transactions.
+   - **Language**: TypeScript (NestJS)
+   - **Build-Tool**: N/A (JavaScript-based, no additional build tool)
+   - **Database**: PostgreSQL
+   - **Protocol**: REST
+   - **Reason**: Ensures reliable, secure, and scalable handling of payment data.
 
 6. **Product Service**
    - Function: Manage product catalogs for online shopping.
@@ -95,7 +100,8 @@ Each microservice is paired with a database that best suits its requirements, en
 | **Microservice**         | **Database**  | **Reason**                                                                 |
 |---------------------------|---------------|-----------------------------------------------------------------------------|
 | Note Service              | SQLite        | Lightweight and ideal for local-first personal note management.             |
-| Auction Service           | PostgreSQL    | Strong support for transactions and real-time updates.                     | High-speed, in-memory data storage for temporary cart data.                |
+| Auction Service           | PostgreSQL    | Strong support for transactions and real-time updates.                     |
+| Payment Service           | PostgreSQL    | Reliable, secure, and scalable handling of payment data.                   |
 
 ### Java (Spring Boot)
 
