@@ -1,5 +1,4 @@
-// app/api/auth/error/route.ts
-//'use client'
+export const dynamic = 'force-dynamic'; // Für dynamische Routen
 
 import { redirect } from 'next/navigation';
 
@@ -16,12 +15,8 @@ export async function GET(request: Request) {
     default: 'An unknown error occurred.',
   };
 
-  // Fehlermeldung ermitteln
   const errorMessage =
     errorMessages[error as string] || errorMessages['default'];
 
-  //return NextResponse.json({ error: errorMessage });
-  //return NextResponse.redirect(`/login?error=${errorMessage}}`);
-  redirect(`/login?error=${errorMessage}`);
-  //router.push(`/login?error=${errorMessage}`);
+  redirect(`/login?error=${encodeURIComponent(errorMessage)}`);
 }
