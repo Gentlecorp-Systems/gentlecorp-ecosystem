@@ -6,13 +6,14 @@ Welcome to the GentleCorp-Ecosystem! This project is a comprehensive suite of mi
 
 1. [Overview](#overview)
 2. [Microservices and Languages](#microservices-and-languages)
-3. [Tech Stack](#tech-stack)
-4. [Repository Structure](#repository-structure)
-5. [Getting Started](#getting-started)
+3. [Repository Names](#repository-names)
+4. [Tech Stack](#tech-stack)
+5. [Repository Structure](#repository-structure)
+6. [Getting Started](#getting-started)
    - [Using Docker](#using-docker)
    - [Starting Individually](#starting-individually)
-6. [Contributing](#contributing)
-7. [License](#license)
+7. [Contributing](#contributing)
+8. [License](#license)
 
 ---
 
@@ -89,6 +90,41 @@ Each microservice is implemented in the language best suited to its specific nee
 
 5. **Transport Service**
    - Function: Integrate and manage transport options.
+
+---
+
+## Repository Names
+
+Each microservice has its dedicated repository. Below are the names:
+
+### TypeScript (NestJS)
+
+1. **Auction Service**: `gentlecorp-auction-service`
+2. **Order Service**: `gentlecorp-order-service`
+3. **Inventory Service**: `gentlecorp-inventory-service`
+4. **Menu Service**: `gentlecorp-menu-service`
+5. **Payment Service**: `gentlecorp-payment-service`
+6. **Product Service**: `gentlecorp-product-service`
+7. **ShoppingCart Service**: `gentlecorp-shoppingcart-service`
+
+### Java (Spring Boot)
+
+1. **Property Service**: `gentlecorp-property-service`
+2. **Customer Service**: `gentlecorp-customer-service`
+3. **Account Service**: `gentlecorp-account-service`
+4. **Invoice Service**: `gentlecorp-invoice-service`
+5. **Transaction Service**: `gentlecorp-transaction-service`
+6. **Booking Service**: `gentlecorp-booking-service`
+7. **Entertainment Service**: `gentlecorp-entertainment-service`
+8. **Activity Service**: `gentlecorp-activity-service`
+
+### Python (FastAPI)
+
+1. **Notification Service**: `gentlecorp-notification-service`
+2. **Activity Log Service**: `gentlecorp-activity-log-service`
+3. **Recommendation Service**: `gentlecorp-recommendation-service`
+4. **Reviews Service**: `gentlecorp-reviews-service`
+5. **Transport Service**: `gentlecorp-transport-service`
 
 ---
 
