@@ -8,12 +8,13 @@ Welcome to the GentleCorp-Ecosystem! This project is a comprehensive suite of mi
 2. [Microservices and Languages](#microservices-and-languages)
 3. [Repository Names](#repository-names)
 4. [Tech Stack](#tech-stack)
-5. [Repository Structure](#repository-structure)
-6. [Getting Started](#getting-started)
+5. [Database Selection](#database-selection)
+6. [Repository Structure](#repository-structure)
+7. [Getting Started](#getting-started)
    - [Using Docker](#using-docker)
    - [Starting Individually](#starting-individually)
-7. [Contributing](#contributing)
-8. [License](#license)
+8. [Contributing](#contributing)
+9. [License](#license)
 
 ---
 
@@ -26,6 +27,13 @@ Welcome to the GentleCorp-Ecosystem! This project is a comprehensive suite of mi
 Each microservice is implemented in the language best suited to its specific needs. Below is a detailed breakdown:
 
 ### TypeScript (NestJS)
+
+1. **Note Service**
+   - Function: Manage personal notes for users.
+   - **Reason**: SQLite is an ideal choice for a lightweight, local-first service that allows users to create, edit, and delete personal notes efficiently.
+
+2. **Auction Service**
+   - Function: Manage auctions and bids in real time.
 
 1. **Auction Service**
    - Function: Manage auctions and bids in real time.
@@ -62,6 +70,7 @@ Each Java-based microservice uses either Gradle or Maven as the build tool, and 
 | Booking Service           | Maven          | `gentlecorp-booking-service`       | REST          | REST offers reliable booking operations for third-party integrations.      |
 | Entertainment Service     | Gradle         | `gentlecorp-entertainment-service` | GraphQL       | GraphQL allows querying flexible multimedia content.                       |
 | Activity Service          | Maven          | `gentlecorp-activity-service`      | REST          | REST supports straightforward activity management and planning.            |
+| Todo Service              | SQLite         | `gentlecorp-todo-service`          | REST          | Lightweight database for managing user-specific todo items.                |
 
 ### Python (FastAPI)
 
@@ -75,107 +84,42 @@ Each Python-based microservice implements a protocol tailored to its specific fu
 | Reviews Service           | `gentlecorp-reviews-service`        | GraphQL       | GraphQL handles nested data for user reviews efficiently.                  |
 | Transport Service         | `gentlecorp-transport-service`      | REST          | REST ensures compatibility with external transport APIs.                   |
 
-### TypeScript (NestJS)
-
-Each TypeScript-based microservice uses either REST or GraphQL based on its data complexity:
-
-| **Microservice**         | **Repository Name**                 | **Protocol**  | **Reason**                                                                 |
-|---------------------------|-------------------------------------|---------------|-----------------------------------------------------------------------------|
-| Auction Service           | `gentlecorp-auction-service`       | GraphQL       | GraphQL supports real-time updates and flexible bidding data queries.      |
-| Order Service             | `gentlecorp-order-service`         | REST          | REST fits the transactional nature of order processing.                    |
-| Inventory Service         | `gentlecorp-inventory-service`     | REST          | REST ensures compatibility with inventory tracking systems.                |
-| Menu Service              | `gentlecorp-menu-service`          | GraphQL       | GraphQL offers dynamic queries for menu items and configurations.          |
-| Payment Service           | `gentlecorp-payment-service`       | REST          | REST is ideal for secure and transactional financial operations.           |
-| Product Service           | `gentlecorp-product-service`       | GraphQL       | GraphQL enables flexible and efficient product catalog queries.            |
-| ShoppingCart Service      | `gentlecorp-shoppingcart-service`  | REST          | REST ensures compatibility and simplicity for cart operations.             |
-
-1. **Notification Service**
-   - Function: Send real-time notifications via various channels.
-
-2. **Activity Log Service**
-   - Function: Track and store user activity logs.
-
-3. **Recommendation Service**
-   - Function: Provide personalized suggestions based on user behavior.
-
-4. **Reviews Service**
-   - Function: Manage and store user reviews and ratings.
-
-5. **Transport Service**
-   - Function: Integrate and manage transport options.
-
 ---
 
-## Repository Names
+## Database Selection
 
-Each microservice has its dedicated repository. Below are the names:
+Each microservice is paired with a database that best suits its requirements, ensuring a balance between scalability, performance, and maintainability. To ensure diversity, each language uses all four database systems at least once.
 
 ### TypeScript (NestJS)
 
-1. **Auction Service**: `gentlecorp-auction-service`
-2. **Order Service**: `gentlecorp-order-service`
-3. **Inventory Service**: `gentlecorp-inventory-service`
-4. **Menu Service**: `gentlecorp-menu-service`
-5. **Payment Service**: `gentlecorp-payment-service`
-6. **Product Service**: `gentlecorp-product-service`
-7. **ShoppingCart Service**: `gentlecorp-shoppingcart-service`
+| **Microservice**         | **Database**  | **Reason**                                                                 |
+|---------------------------|---------------|-----------------------------------------------------------------------------|
+| Note Service              | SQLite        | Lightweight and ideal for local-first personal note management.             |
+| Auction Service           | PostgreSQL    | Strong support for transactions and real-time updates.                     | High-speed, in-memory data storage for temporary cart data.                |
 
 ### Java (Spring Boot)
 
-1. **Property Service**: `gentlecorp-property-service`
-2. **Customer Service**: `gentlecorp-customer-service`
-3. **Account Service**: `gentlecorp-account-service`
-4. **Invoice Service**: `gentlecorp-invoice-service`
-5. **Transaction Service**: `gentlecorp-transaction-service`
-6. **Booking Service**: `gentlecorp-booking-service`
-7. **Entertainment Service**: `gentlecorp-entertainment-service`
-8. **Activity Service**: `gentlecorp-activity-service`
+| **Microservice**         | **Database**  | **Reason**                                                                 |
+|---------------------------|---------------|-----------------------------------------------------------------------------|
+| Property Service          | MySQL         | Relational database ideal for structured property listings.                |
+| Customer Service          | MongoDB       | Flexibility for unstructured and evolving customer data.                   |
+| Account Service           | PostgreSQL    | Strong ACID compliance for sensitive financial account data.               |
+| Invoice Service           | PostgreSQL    | Reliable for complex invoice data and transactional integrity.             |
+| Transaction Service       | MySQL         | Optimized for high-volume financial transaction processing.                |
+| Booking Service           | PostgreSQL    | Secure and scalable for centralized booking data.                          |
+| Entertainment Service     | MongoDB       | Best suited for managing multimedia content.                               |
+| Activity Service          | Redis         | Fast access to frequently queried activity-related data.                   |
+| Todo Service              | SQLite        | Lightweight and localized storage for todo items.                          |
 
 ### Python (FastAPI)
 
-1. **Notification Service**: `gentlecorp-notification-service`
-2. **Activity Log Service**: `gentlecorp-activity-log-service`
-3. **Recommendation Service**: `gentlecorp-recommendation-service`
-4. **Reviews Service**: `gentlecorp-reviews-service`
-5. **Transport Service**: `gentlecorp-transport-service`
-
----
-
-## Tech Stack
-
-### Frontend
-
-- **Framework**: [Next.js](https://nextjs.org/) (using the App Router)
-- **Language**: TypeScript
-- **Styling**: [Bootstrap](https://getbootstrap.com/)
-
-### Backend
-
-#### TypeScript (NestJS)
-- Auction Service
-- Order Service
-- Inventory Service
-- Menu Service
-- Payment Service
-- Product Service
-- ShoppingCart Service
-
-#### Java (Spring Boot)
-- Property Service
-- Customer Service
-- Account Service
-- Invoice Service
-- Transaction Service
-- Booking Service
-- Entertainment Service
-- Activity Service
-
-#### Python (FastAPI)
-- Notification Service
-- Activity Log Service
-- Recommendation Service
-- Reviews Service
-- Transport Service
+| **Microservice**         | **Database**  | **Reason**                                                                 |
+|---------------------------|---------------|-----------------------------------------------------------------------------|
+| Notification Service      | Redis         | Ideal for real-time notifications and temporary data.                      |
+| Activity Log Service      | MongoDB       | Flexible schema for storing diverse log entries.                           |
+| Recommendation Service    | PostgreSQL    | Optimal for managing and querying relational recommendation data.          |
+| Reviews Service           | MySQL         | Relational data model fits structured review data with complex queries.     |
+| Transport Service         | SQLite        | Lightweight solution for small-scale transport data.                       |
 
 ---
 
@@ -220,7 +164,3 @@ We welcome contributions! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
-This project is available in multiple languages:
-- [English Version](README-eng.md)
-- [Deutsche Version](README-ger.md)
