@@ -1,12 +1,10 @@
-export const dynamic = 'force-dynamic'; // Für dynamische Routen
-
-import { redirect } from 'next/navigation';
+// app/api/auth/error/route.ts
+import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const error = url.searchParams.get('error');
 
-  // Fehlermeldungen definieren
   const errorMessages: { [key: string]: string } = {
     'Invalid credentials': 'Invalid username or password.',
     CredentialsSignin: 'Invalid username or password.',
@@ -18,5 +16,5 @@ export async function GET(request: Request) {
   const errorMessage =
     errorMessages[error as string] || errorMessages['default'];
 
-  redirect(`/login?error=${encodeURIComponent(errorMessage)}`);
+  return NextResponse.json({ error: errorMessage });
 }
