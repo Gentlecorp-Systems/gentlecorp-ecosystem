@@ -167,6 +167,10 @@ We welcome contributions! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for
 
 ---
 
+ <https://gentlecorp-systems.github.io/gentlecorp-ecosystem/>
+
+---
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
