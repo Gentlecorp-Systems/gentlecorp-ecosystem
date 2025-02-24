@@ -9,10 +9,13 @@ import { authOptions } from '../../../../lib/authOptions';
  * - GET: Authentifizierungsdaten abrufen.
  * - POST: Authentifizierungsaktionen ausführen.
  */
-export const GET = async (request: Request) => {
-    return NextAuth(authOptions)(request);
-};
+// export const GET = async (request: Request) => {
+//     return NextAuth(authOptions)(request);
+// };
 
-export const POST = async (request: Request) => {
-    return NextAuth(authOptions)(request);
-};
+// export const POST = async (request: Request) => {
+//     return NextAuth(authOptions)(request);
+// };
+
+export const GET = NextAuth(authOptions);
+export const POST = NextAuth(authOptions);
