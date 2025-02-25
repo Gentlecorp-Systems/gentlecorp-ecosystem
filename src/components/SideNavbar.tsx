@@ -24,7 +24,7 @@ const headerHeight = 64;
 const footerHeight = 50;
 
 const menuItems = [
-  { text: "Dashboard", icon: <HomeIcon />, link: "/" },
+  { text: "Dashboard", icon: <HomeIcon />, link: "/analytics" },
   { text: "Kunden", icon: <PeopleIcon />, link: "/analytics/customers" },
   { text: "Logs", icon: <LogsIcon />, link: "/logs" },
   { text: "Reports", icon: <ReportsIcon />, link: "/reports" },

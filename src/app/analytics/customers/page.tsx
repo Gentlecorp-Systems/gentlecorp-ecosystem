@@ -11,7 +11,7 @@ export default async function CustomersPage() {
   const initialData = await getCustomers(session?.access_token); // Kunden abrufen
 
   return (
-    <Box pt={7}>
+    <Box pt={0}>
       <CustomersClient initialData={initialData} token={session.access_token} />
     </Box>
   );

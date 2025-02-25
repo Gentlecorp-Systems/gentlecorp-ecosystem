@@ -2,10 +2,10 @@
 "use client";
 
 import { Box, CssBaseline } from "@mui/material";
-import Header from "../../../components/Header";
-import SideNavbar from "../../../components/SideNavbar";
+import Header from "../../components/Header";
+import SideNavbar from "../../components/SideNavbar";
 import { useState } from "react";
-import Footer from "../../../components/Footer";
+import Footer from "../../components/Footer";
 
 const headerHeight = 64;
 
@@ -29,7 +29,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Header toggleSidebar={toggleSidebar} />
 
       {/* Platz für den Header */}
-      {/* <Box sx={{ height: `${headerHeight}px` }} /> */}
+      <Box sx={{ height: `${headerHeight}px` }} />
 
       {/* Main Content mit Sidebar */}
       <Box sx={{ display: "flex", flexGrow: 1 }}>
