@@ -1,399 +1,214 @@
 /**
- * @file BrandingSignInPage.tsx
- * @description Diese Komponente stellt eine moderne, kreative und benutzerfreundliche
- * Anmeldeseite dar, die den Bildschirm in zwei Spalten aufteilt: links das klassische
- * Login mit E-Mail und Passwort, rechts die Anmeldung über externe Provider.
- * Das Design nutzt den verfügbaren Platz optimal aus und verbindet innovative UI-Elemente
- * mit seriösem Look.
+ * @file Dashboard.tsx
+ * @description Diese Komponente stellt das Haupt-Dashboard dar. Sie ruft Sitzungs- und Kontoinformationen ab
+ * und rendert ein modernes, responsives Layout unter Verwendung von Material-UI (MUI) Komponenten.
+ *
+ * Das Dashboard zeigt wichtige Kennzahlen wie Budget, Anzahl der Kunden, Fortschritt der Aufgaben
+ * und den Gesamtgewinn an. Das Layout wurde so gestaltet, dass es den modernen, benutzerfreundlichen
+ * und innovativen Anforderungen entspricht. Die Hintergrundfarbe (#F8F8FC) entspricht dem vorgegebenen
+ * Sekundärfarbschema für einen sauberen Look.
+ *
+ * @module Dashboard
  */
 
 "use client";
 
-import * as React from "react";
-import { AppProvider } from "@toolpad/core/AppProvider";
-import { AuthResponse, type AuthProvider } from "@toolpad/core/SignInPage";
-import {
-  Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  Box,
-  Paper,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
-import Link from "next/link";
-import Image from "next/image";
+import { getServerSession } from "next-auth";
+import { getLogger } from "../../../utils/logger";
+import { authOptions } from "../../../lib/authOptions";
+import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Budget } from "../../../components/dashboard/overview/budget";
+import { TotalCustomers } from "../../../components/dashboard/overview/total-customers";
+import { TasksProgress } from "../../../components/dashboard/overview/tasks-progress";
+import { TotalProfit } from "../../../components/dashboard/overview/total-profit";
+import { useState } from "react";
+import { NewCustomers } from "../../../components/dashboard/overview/new-customers";
+import { ActiveCustomers } from "../../../components/dashboard/overview/active-customers";
+import DashboardCard from "../../../components/DashboardCard";
+import { LineChart } from "@mui/x-charts/LineChart";
+import dynamic from "next/dynamic";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-/**
- * Liste der unterstützten Authentifizierungsanbieter.
- */
-const providers = [
-  { id: "github", name: "GitHub" },
-  { id: "google", name: "Google" },
-  { id: "facebook", name: "Facebook" },
-  { id: "twitter", name: "Twitter" },
-  { id: "linkedin", name: "LinkedIn" },
-  { id: "credentials", name: "Email and Password" },
-];
+export default function Dashboard() {
+  // Sitzungsinformationen abrufen
+  // const session = await getServerSession(authOptions);
+  // const logger = getLogger(Dashboard.name);
+  // logger.debug("Session-Daten:", session);
+  const [value, setValue] = useState(0);
 
-/**
- * Branding-Konfiguration mit Logo, Titel und Tagline.
- */
-const BRANDING = {
-  logo: (
-    <Image
-      src="https://mui.com/static/logo.svg"
-      alt="MUI logo"
-      width={50}
-      height={30}
-    />
-  ),
-  title: "Creative MUI",
-  tagline: "Innovativ. Modern. Inspirierend.",
-};
-
-/**
- * Simulierte Anmeldefunktion, die Authentifizierungsanfragen verarbeitet.
- *
- * @param provider - Der ausgewählte Authentifizierungsanbieter.
- * @param formData - Optional: Formular-Daten, die die Anmeldedaten enthalten.
- * @returns Ein Promise, das ein AuthResponse-Objekt liefert.
- */
-const signIn: (
-  provider: AuthProvider,
-  formData?: FormData
-) => Promise<AuthResponse> | void = async (provider, formData) => {
-  return new Promise<AuthResponse>((resolve) => {
-    setTimeout(() => {
-      console.log(`Sign in with ${provider.id}`);
-      const email = formData?.get("email");
-      const password = formData?.get("password");
-      alert(
-        `Signing in with "${provider.name}" and credentials: ${email}, ${password}`
-      );
-      resolve({
-        type: "CredentialsSignin",
-        error: "Invalid credentials.",
-        success: "Check your email for a verification link.",
-      });
-    }, 500);
-  });
-};
-
-/**
- * Hauptkomponente der geteilten Anmeldeseite.
- *
- * @returns JSX.Element der Anmeldeseite.
- */
-export default function BrandingSignInPage(): JSX.Element {
-  const theme = useTheme();
-
-  /**
-   * Handler für den klassischen Anmelde-Submit (E-Mail/Passwort).
-   *
-   * @param event - Das Submit-Ereignis des Formulars.
-   */
-  const handleCredentialsSubmit = (
-    event: React.FormEvent<HTMLFormElement>
-  ): void => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    // Aufruf der Anmeldefunktion mit dem "credentials"-Provider
-    signIn({ id: "credentials", name: "Email and Password" }, formData);
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
   };
 
+  const optionscolumnchart = {
+    chart: {
+      type: "area",
+      fontFamily: "'Plus Jakarta Sans', sans-serif;",
+      foreColor: "#adb0bb",
+      toolbar: {
+        show: false,
+      },
+      height: 60,
+      sparkline: {
+        enabled: true,
+      },
+      group: "sparklines",
+    },
+    stroke: {
+      curve: "smooth",
+      width: 2,
+    },
+    fill: {
+      //colors: [secondarylight],
+      type: "solid",
+      opacity: 0.05,
+    },
+    markers: {
+      size: 0,
+    },
+    tooltip: {
+     // theme: theme.palette.mode === "dark" ? "dark" : "light",
+    },
+  };
+  const seriescolumnchart = [
+    {
+      name: "",
+      //color: secondary,
+      data: [25, 66, 20, 40, 12, 58, 20],
+    },
+  ];
+
+  // Rückgabe des MUI-Grid-Layouts mit festgelegter Hintergrundfarbe (Sekundärfarbe) und responsiven Kennzahlen-Karten
   return (
-    <AppProvider branding={BRANDING} theme={theme}>
-      <Box
-        sx={{
-          minHeight: "100vh",
-          background: "linear-gradient(135deg, #f5f7fa, #c3cfe2)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          p: 2,
-        }}
-      >
-        <Box
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          textColor="secondary"
+          indicatorColor="secondary"
+          centered
           sx={{
-            display: "flex",
-            width: "100%",
-            maxWidth: "1200px",
-            gap: 4,
+            marginBottom: 3,
+            "& .MuiTabs-flexContainer": {
+              justifyContent: "start",
+            },
+            "& .MuiTab-root": {
+              fontWeight: "bold",
+              textTransform: "none",
+            },
           }}
         >
-          {/* Linke Spalte: E-Mail/Passwort Login */}
-          <Paper
-            elevation={8}
-            sx={{
-              flex: 1,
-              p: 4,
-              borderRadius: 3,
-              backgroundColor: "#ffffffee",
-              backdropFilter: "blur(5px)",
-              animation: "fadeIn 1s ease-in-out",
-              "@keyframes fadeIn": {
-                from: { opacity: 0 },
-                to: { opacity: 1 },
-              },
-            }}
-          >
-            <Box sx={{ mb: 2, textAlign: "center" }}>
-              {BRANDING.logo}
-              <Typography variant="h4" sx={{ mt: 1 }}>
-                {BRANDING.title}
-              </Typography>
-              <Typography variant="subtitle1" sx={{ color: "#555" }}>
-                {BRANDING.tagline}
-              </Typography>
-            </Box>
-            <form onSubmit={handleCredentialsSubmit}>
-              <CustomEmailField />
-              <CustomPasswordField />
-              <AgreeWithTerms />
-              <CustomButton />
-            </form>
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}
-            >
-              <SignUpLink />
-              <ForgotPasswordLink />
-            </Box>
-          </Paper>
-          {/* Rechte Spalte: Login via Provider */}
-          <Paper
-            elevation={8}
-            sx={{
-              flex: 1,
-              p: 4,
-              borderRadius: 3,
-              backgroundColor: "#ffffffee",
-              backdropFilter: "blur(5px)",
-              animation: "fadeIn 1s ease-in-out",
-              "@keyframes fadeIn": {
-                from: { opacity: 0 },
-                to: { opacity: 1 },
-              },
-            }}
-          >
-            <Box sx={{ mb: 2, textAlign: "center" }}>
-              <Typography variant="h5">Anmelden mit</Typography>
-            </Box>
-            {providers
-              .filter((provider) => provider.id !== "credentials")
-              .map((provider) => (
-                <Button
-                  key={provider.id}
-                  variant="outlined"
-                  color="info"
-                  size="medium"
-                  fullWidth
-                  sx={{
-                    my: 1,
-                    transition: "transform 0.3s",
-                    "&:hover": {
-                      transform: "scale(1.02)",
-                    },
-                  }}
-                  onClick={() => signIn(provider)}
-                >
-                  {provider.name}
-                </Button>
-              ))}
-          </Paper>
-        </Box>
+          <Tab label="Overview" />
+          <Tab label="User Behavior" />
+          <Tab label="Performane" />
+        </Tabs>
       </Box>
-    </AppProvider>
-  );
-}
 
-/**
- * Benutzerdefiniertes E-Mail-Feld mit integriertem Icon.
- *
- * @returns JSX.Element eines Textfeldes für die E-Mail-Eingabe.
- */
-function CustomEmailField(): JSX.Element {
-  return (
-    <TextField
-      id="input-with-icon-textfield"
-      label="Email"
-      name="email"
-      type="email"
-      size="small"
-      required
-      fullWidth
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <AccountCircle fontSize="inherit" />
-          </InputAdornment>
-        ),
-      }}
-      variant="outlined"
-      sx={{
-        my: 1,
-        transition: "transform 0.3s",
-        "&:hover": {
-          transform: "scale(1.02)",
-        },
-      }}
-    />
-  );
-}
+      <CustomTabPanel value={value} index={0}>
+        <Grid container spacing={3} p={3} sx={{ backgroundColor: "#F8F8FC" }}>
+          <Grid item lg={3} sm={6} xs={12}>
+            <Budget diff={12} trend="up" sx={{ height: "100%" }} value="$24k" />
+          </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <TotalCustomers
+              diff={16}
+              trend="down"
+              sx={{ height: "100%" }}
+              value="1.6k"
+            />
+          </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <TasksProgress sx={{ height: "100%" }} value={75.5} />
+          </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <TotalProfit sx={{ height: "100%" }} value="$15k" />
+          </Grid>
+        </Grid>
+      </CustomTabPanel>
 
-/**
- * Benutzerdefiniertes Passwort-Feld mit Sichtbarkeitsumschaltung.
- *
- * @returns JSX.Element eines Eingabefeldes für das Passwort.
- */
-function CustomPasswordField(): JSX.Element {
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  /**
-   * Wechselt den Sichtbarkeitsstatus des Passworts.
-   */
-  const handleClickShowPassword = (): void => setShowPassword((show) => !show);
-
-  /**
-   * Verhindert das Standardverhalten bei Maus-Klicks.
-   *
-   * @param event - Das Mausereignis.
-   */
-  const handleMouseDownPassword = (event: React.MouseEvent): void => {
-    event.preventDefault();
-  };
-
-  return (
-    <FormControl sx={{ my: 1 }} fullWidth variant="outlined">
-      <InputLabel size="small" htmlFor="outlined-adornment-password">
-        Password
-      </InputLabel>
-      <OutlinedInput
-        id="outlined-adornment-password"
-        type={showPassword ? "text" : "password"}
-        name="password"
-        size="small"
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={handleClickShowPassword}
-              onMouseDown={handleMouseDownPassword}
-              edge="end"
-              size="small"
-              sx={{
-                transition: "transform 0.3s",
-                "&:hover": { transform: "rotate(20deg)" },
-              }}
+      <CustomTabPanel value={value} index={1}>
+        <Grid container spacing={3} p={3} sx={{ backgroundColor: "#F8F8FC" }}>
+          <Grid item lg={3} sm={6} xs={12}>
+            <TotalCustomers
+              diff={16}
+              trend="down"
+              sx={{ height: "100%" }}
+              value="1.6k"
+            />
+          </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <ActiveCustomers
+              diff={16}
+              trend="down"
+              sx={{ height: "100%" }}
+              value="1.6k"
+            />
+          </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <NewCustomers
+              diff={16}
+              trend="down"
+              sx={{ height: "100%" }}
+              value="1.6k"
+            />
+          </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <DashboardCard
+              title="Monthly Earnings"
+              footer={
+                <Chart
+                  options={optionscolumnchart}
+                  series={seriescolumnchart}
+                  type="area"
+                  height={60}
+                  width={"100%"}
+                />
+              }
             >
-              {showPassword ? (
-                <VisibilityOff fontSize="inherit" />
-              ) : (
-                <Visibility fontSize="inherit" />
-              )}
-            </IconButton>
-          </InputAdornment>
-        }
-        label="Password"
-      />
-    </FormControl>
+              <>
+                <Typography variant="h3" fontWeight="700" mt="-20px">
+                  $6,820
+                </Typography>
+                <Stack direction="row" spacing={1} my={1} alignItems="center">
+                  <Typography variant="subtitle2" fontWeight="600">
+                    +9%
+                  </Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    last year
+                  </Typography>
+                </Stack>
+              </>
+            </DashboardCard>
+          </Grid>
+        </Grid>
+      </CustomTabPanel>
+
+      <CustomTabPanel value={value} index={2}>
+        Item Three
+      </CustomTabPanel>
+    </Box>
   );
 }
 
-/**
- * Benutzerdefinierter Button zum Absenden des Anmeldeformulars.
- *
- * @returns JSX.Element eines Buttons.
- */
-function CustomButton(): JSX.Element {
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
   return (
-    <Button
-      type="submit"
-      variant="contained"
-      color="primary"
-      size="medium"
-      disableElevation
-      fullWidth
-      sx={{
-        my: 2,
-        transition: "background-color 0.3s, transform 0.3s",
-        "&:hover": {
-          backgroundColor: "primary.dark",
-          transform: "scale(1.03)",
-        },
-      }}
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
     >
-      Log In
-    </Button>
-  );
-}
-
-/**
- * Komponente zur Zustimmung der AGB.
- *
- * @returns JSX.Element mit einem Checkbox-Element.
- */
-function AgreeWithTerms(): JSX.Element {
-  return (
-    <FormControlLabel
-      control={
-        <Checkbox
-          name="tandc"
-          value="true"
-          color="primary"
-          sx={{
-            padding: 0.5,
-            "& .MuiSvgIcon-root": {
-              fontSize: 20,
-              transition: "color 0.3s",
-            },
-            "&:hover": {
-              color: (theme) => theme.palette.primary.main,
-            },
-          }}
-        />
-      }
-      label="I agree with the T&C"
-      componentsProps={{ typography: { variant: "body2" } }}
-    />
-  );
-}
-
-/**
- * Link-Komponente zur Registrierung.
- *
- * @returns JSX.Element eines Links zur Registrierungsseite.
- */
-function SignUpLink(): JSX.Element {
-  return (
-    <Link
-      href="/"
-      style={{ textDecoration: "none", color: "#1976d2", fontWeight: "bold" }}
-    >
-      Sign up
-    </Link>
-  );
-}
-
-/**
- * Link-Komponente für die Passwort-Wiederherstellung.
- *
- * @returns JSX.Element eines Links zur Seite "Passwort vergessen?".
- */
-function ForgotPasswordLink(): JSX.Element {
-  return (
-    <Link
-      href="/"
-      style={{ textDecoration: "none", color: "#1976d2", fontWeight: "bold" }}
-    >
-      Forgot password?
-    </Link>
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
   );
 }

@@ -29,11 +29,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable}`}
-       style={{ backgroundColor: "#6A4BBC"}}
+        style={{ backgroundColor: "#6A4BBC" }}
       >
         <SessionProvider>
           {children}
-          </SessionProvider>
+          {/* Footer */}
+        </SessionProvider>
       </body>
     </html>
   );
